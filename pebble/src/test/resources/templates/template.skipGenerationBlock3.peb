@@ -1,5 +1,0 @@
-{# 
-	used by 
-		- CoreTagsTest.skipGenerationBlock
-#}
-{% block content %}{% endblock %}

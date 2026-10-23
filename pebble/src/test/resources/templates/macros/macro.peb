@@ -1,7 +1,0 @@
-{% macro test() %}
-Macro-Output: {{ "test" | testfilter }}
-{% endmacro %}
-
-{% macro test2() %}
-Macro-Output: {{ "test" | testfilter }}
-{% endmacro %}

@@ -1,3 +1,0 @@
-{# used by CoreFunctionsTest.testParentThenMacro #}
-{% extends "templates/function/template.parentThenMacro.peb" %}
-{% block head %}{{ parent() }}{% endblock head %}

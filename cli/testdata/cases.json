@@ -1,0 +1,434 @@
+[
+ {
+  "id": "autoescape_strategies/0001",
+  "argv": [
+   "--strict-variables",
+   "--no-autoescaping",
+   "--escaping-strategy=css",
+   "--timezone=Australia/Lord_Howe",
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% extends \"base.peb\" %}{% block content %}{% if o9 is not empty %}{{ d7|abs }}|{{ -n8 }}{% autoescape false %}{{ h2 }}{% endautoescape %}{% for e6 in m5 %}{{ e6.key }}={{ e6.value }};{% endfor %}{{ h1|escape(strategy=\"\") }}{{ dt4|date(\"yyyy-MM-dd HH:mm:ss z\", existingFormat=\"MMMM dd, yyyy\") }}{{ dt3|date(\"HH:mm X\", timeZone=\"Australia/Lord_Howe\") }}/{{ dt3|date(\"HH:mm\") }}{% endif %}{% endblock %}{% block title %}{{ h10|nl2br }}{% endblock %}",
+   "ctx.json": "{\"h1\":\"'; alert(1); //\",\"h2\":\"`back`\",\"dt3\":\"1970-01-01T00:00:00+0000\",\"dt4\":\"July 24, 2001\",\"m5\":{\"x\":1.0e7,\"y\":\"<b>\",\"z\":null},\"d7\":9223372036854775807,\"n8\":-1,\"o9\":\"x\",\"h10\":\"\\u2028sep\\u2029\"}"
+  },
+  "out": "[base  sep ]\n9223372036854775807|1`back`x=1.0E7;y=<b>;z=;",
+  "err": "PebbleException: Unknown escaping strategy [] (main.peb:1)\n",
+  "code": 4
+ },
+ {
+  "id": "cli/0002",
+  "argv": [
+   "--strict-variables",
+   "--literal-numbers-as-bigdecimals",
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% macro k3(p) %}[{{ p }}]{% autoescape true %}cli:{{ s1|upper }}\n--\n{{ a|default(\"-\") }}\n--\n{{ h2|raw }}|{{ h2|upper|raw }}|{{ h2|raw|upper }}{% endautoescape %}{% endmacro %}{{ k3(\"<b>\") }}",
+   "ctx.json": "null"
+  },
+  "out": "",
+  "err": "context error: the context must be a JSON object\n",
+  "code": 65
+ },
+ {
+  "id": "control_if_for/0001",
+  "argv": [
+   "--strict-variables",
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% parallel %}{% for i3 in range(0,2) %}{% for j4 in [1,2] %}{{ i3 }}{{ j4 }} {% endfor %}{% endfor %}{{ dt7|date(\"HH:mm X\", timeZone=\"PST\") }}/{{ dt7|date(\"HH:mm\") }}{% for x2 in l1 %}{{ x2 }}{% else %}empty{% endfor %}{{ d5|abs }}|{{ -n6 }}{% endparallel %}",
+   "ctx.json": "{\"l1\":[3,1,2],\"d5\":2147483647,\"n6\":7,\"dt7\":\"2020-01-01T00:00:00+0000\"}"
+  },
+  "out": "01 02 11 12 21 22 16:00 -08/00:003122147483647|-7",
+  "err": "",
+  "code": 0
+ },
+ {
+  "id": "errors/0001",
+  "argv": [
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% if o7 is not empty %}{% if %}x{% endif %}\n{{ m6|length }}\n[{{ s4|trim }}]\n{{ dt3|date(\"yyyy\") }}\n{{ n1 / 0 }}|{{ n2 % 0 }}\n{{ \"<#{s5|sha256}>\" }}{% endif %}",
+   "ctx.json": "{\"n1\":7,\"n2\":7,\"dt3\":\"2019-02-30T12:00:00+0000\",\"s4\":\"\\u000bvt\\f\",\"s5\":\"ǅungla\",\"m6\":{\"straße\":1,\"ﬄ\":2,\"İ\":3},\"o7\":\"x\"}"
+  },
+  "out": "",
+  "err": "ParserException: Unexpected token \"EXECUTE_END\" of value \"%}\" (main.peb:1)\n",
+  "code": 2
+ },
+ {
+  "id": "filters_collections/0001",
+  "argv": [
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% if o6 %}[{{ s4|trim }}]\n--\n{{ m3.outer }}\n--\n{{ l2|slice(0,1) }}\n--\n{{ l1|join(\" | \") }}\n--\n{{ s5|split(\",\")|join(\"/\") }}{% endif %}",
+   "ctx.json": "{\"l1\":[\"straße\",\"ﬄ\",\"İ\"],\"l2\":[],\"m3\":{\"outer\":{\"aa\":1,\"bb\":2,\"cc\":3,\"dd\":4,\"ee\":5,\"ff\":6,\"gg\":7}},\"s4\":\"   fig \",\"s5\":\"x1y22z\",\"o6\":\"x\"}"
+  },
+  "out": "[  fig]\n--\n{aa=1, bb=2, cc=3, dd=4, ee=5, ff=6, gg=7}--\n",
+  "err": "PebbleException: toIndex must be smaller than input size: 0 (main.peb:5)\n",
+  "code": 4
+ },
+ {
+  "id": "filters_dates/0001",
+  "argv": [
+   "--strict-variables",
+   "--timezone=Asia/Tokyo",
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% filter lower %}{% for c6 in [\"a\",\"b\"] %}{{ c6 }}:{{ s5|base64decode }};{{ dt3|date(\"HH:mm X\", timeZone=\"PST\") }}/{{ dt3|date(\"HH:mm\") }};{{ m4[\"a\"] }}/{{ m4.a|default(\"-\") }};{{ dt2|date(\"yyyy-MM-dd HH:mm:ss\") }};{{ ms1|date(\"ZZZZZ\") }};{% endfor %}{% endfilter %}",
+   "ctx.json": "{\"ms1\":1604208600000,\"dt2\":\"2020-01-01T00:00:00\",\"dt3\":\"2038-01-19T03:14:07+0000\",\"m4\":{\"10\":\"ten\",\"2\":\"two\",\"33\":\"x\",\"1\":\"one\"},\"s5\":\"YQ\"}"
+  },
+  "out": "",
+  "err": "AttributeNotFoundException: Attribute [a] of [java.util.LinkedHashMap] does not exist or can not be accessed and strict variables is set to true. (main.peb:1)\n",
+  "code": 4
+ },
+ {
+  "id": "filters_numbers/0001",
+  "argv": [
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% set sv8 = 42 %}{{ m4.outer }}\n{{ dt5|date(\"yyyy-MM-dd'T'HH:mm:ssZ\") }}\n{{ n7 / -1 }}/{{ n7 * -1 }}\n{{ d3|numberformat(\"¤#,##0.00\") }}|{{ d3|numberformat(\"0.##\") }}\n{{ dt6|date(\"EE\") }}\n{{ n2 / 3 }}|{{ n2 / 3.0 }}|{{ n2 % 7 }}[{{ sv8 }}]",
+   "ctx.json": "{\"d1\":6.02e23,\"n2\":0,\"d3\":0.30000000000000004,\"m4\":{\"outer\":{\"id\":7,\"name\":\"Mitchell\",\"city\":\"Ottawa\",\"tags\":[\"a\",\"b\"]}},\"dt5\":\"1900-01-01T00:00:00+0000\",\"dt6\":\"2020-01-01T00:00:00+0000\",\"n7\":42}"
+  },
+  "out": "{id=7, name=Mitchell, city=Ottawa, tags=[a, b]}1900-01-01T00:00:00+0000-42/-42$0.30|0.3Wed0|0.0|0[42]",
+  "err": "",
+  "code": 0
+ },
+ {
+  "id": "filters_strings/0001",
+  "argv": [
+   "--no-newline-trimming",
+   "--locale=fr-FR",
+   "--hash-maps",
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% embed \"card.peb\" %}{% block cardContent %}{% macro k4(p) %}[{{ p }}][{{ s1|trim }}]|{{ s1|length }}\n{{ h3|escape|escape }}\n{{ h2|nl2br }}{% endmacro %}{{ k4(\"<b>\") }}{% endblock %}{% endembed %}",
+   "ctx.json": "{\"s1\":\"👨‍👩‍👧\",\"h2\":\"line1\\nline2\",\"h3\":\"slash/dash-\"}"
+  },
+  "out": "<card>",
+  "err": "PebbleException: Function or Macro [k4] does not exist. (card.peb:3)\n",
+  "code": 4
+ },
+ {
+  "id": "functions/0002",
+  "argv": [
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% for c5 in range(0,2) %}{{ c5 }}:{{ m3.outer }} | {{ h2|nl2br }} | {% autoescape false %}{{ h4 }}{% endautoescape %}{{ h4 }} | {{ min(d1, -3) }}|{{ max(d1, -1) }};{% endfor %}",
+   "ctx.json": "{\"d1\":-1.5e-9,\"h2\":\"<a href=\\\"x\\\">&amp;</a>\",\"m3\":{\"outer\":{\"aa\":1,\"bb\":2,\"cc\":3,\"dd\":4,\"ee\":5,\"ff\":6,\"gg\":7}},\"h4\":\"line1\\nline2\"}"
+  },
+  "out": "0:{aa=1, bb=2, cc=3, dd=4, ee=5, ff=6, gg=7} | &lt;a href=&quot;x&quot;&gt;&amp;amp;&lt;/a&gt; | line1\nline2line1\nline2 | -3|-1.5E-9;1:{aa=1, bb=2, cc=3, dd=4, ee=5, ff=6, gg=7} | &lt;a href=&quot;x&quot;&gt;&amp;amp;&lt;/a&gt; | line1\nline2line1\nline2 | -3|-1.5E-9;2:{aa=1, bb=2, cc=3, dd=4, ee=5, ff=6, gg=7} | &lt;a href=&quot;x&quot;&gt;&amp;amp;&lt;/a&gt; | line1\nline2line1\nline2 | -3|-1.5E-9;",
+  "err": "",
+  "code": 0
+ },
+ {
+  "id": "include_embed/0001",
+  "argv": [
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% macro k4(p) %}[{{ p }}]{{ s1|upper|lower|capitalize }};{% include \"../c.json\" %};{% embed \"card.peb\" %}{% block cardContent %}{{ parent() }}+{{ block(\"cardFoot\") }}{% endblock %}{% endembed %};{{ {1:\"a\",2:\"b\"} }};{% for e3 in m2 %}{{ loop.index }}:{{ e3.key|upper }} {% endfor %}{% endmacro %}{{ k4(\"ß\") }}",
+   "ctx.json": "{\"s1\":\"ΣΟΦΟΣ\",\"m2\":{\"k1\":[1,2],\"k2\":{\"n\":true},\"k3\":\"s\"}}"
+  },
+  "out": "",
+  "err": "LoaderException: Could not find template [prefix='/tmp/pebble-run/include_embed-0001/templates', templateName='c.json'] (?:?)\ncaused by: FileNotFoundException: /tmp/pebble-run/include_embed-0001/templates/c.json (No such file or directory)\n",
+  "code": 3
+ },
+ {
+  "id": "inheritance_and_blocks/0001",
+  "argv": [
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% extends \"base2.peb\" %}{% block extra %}E{% endblock %}{% block content %}{% if 1 == 1 %}{% if o3 is not null %}{{ s2|slice(5,9) }}\n{{ block(\"nope\") }}\n{{ h1|escape(strategy=\"css\") }}{% else %}else-branch{% endif %}{% else %}else-branch{% endif %}plain{% endblock %}",
+   "ctx.json": "{\"h1\":\"<div>\",\"s2\":\"abc\",\"o3\":true}"
+  },
+  "out": "[base T]\n",
+  "err": "PebbleException: toIndex must be smaller than input size: 3 (main.peb:1)\n",
+  "code": 4
+ },
+ {
+  "id": "loop_variables/0001",
+  "argv": [
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% if o4.a.b.flag %}{% for x2 in l1 %}{{ loop.index }}/{{ loop.length }} {% endfor %} {{ h3|escape(\"url_param\") }}|{{ h3 }}{{ o4.a.b.c }}{% endif %}",
+   "ctx.json": "{\"l1\":[[1,2],[3]],\"h3\":\"a<b>&\\\"'c\",\"o4\":{\"a\":{\"b\":{\"flag\":true,\"c\":\"<x>\"}}}}"
+  },
+  "out": "0/2 1/2  a%3Cb%3E%26%22'c|a&lt;b&gt;&amp;&quot;&#39;c&lt;x&gt;",
+  "err": "",
+  "code": 0
+ },
+ {
+  "id": "macros_and_import/0001",
+  "argv": [
+   "--strict-variables",
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% if o7|length > 0 %}{% macro k6(p) %}[{{ p }}]{{ h2|escape|escape }} | {% import \"macros.peb\" as m %}{{ m.nope() }} | {% for e5 in m4 %}{{ loop.index }}:{{ e5.key|upper }} {% endfor %} | {{ dt3|date(\"yyyy-MM-dd HH:mm:ss zzz\", timeZone=\"GMT-08:00\") }}{% endmacro %}{{ k6(\"arg\") }}{% else %}else-branch{% endif %}",
+   "ctx.json": "{\"h2\":\"<div>\",\"dt3\":\"2020-03-29T00:30:00+0000\",\"m4\":{\"id\":7,\"name\":\"Mitchell\",\"city\":\"Ottawa\",\"tags\":[\"a\",\"b\"]},\"o7\":1}"
+  },
+  "out": "else-branch",
+  "err": "",
+  "code": 0
+ },
+ {
+  "id": "operators_and_precedence/0001",
+  "argv": [
+   "--escaping-strategy=js",
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% if o9|length > 0 %}{% if o8.a.b.flag %}{{ m7 }} {{ n3 >= n4 }} {{ s6|length }}/{{ s6|slice(0,2) }} {{ m5 }} {{ n1 > 0 and n2 < 0 or not false }}{{ o8.a.b.c }}{% endif %}{% endif %}",
+   "ctx.json": "{\"n1\":1.0e7,\"n2\":7,\"n3\":1,\"n4\":9223372036854775807,\"m5\":{\"aa\":1,\"bb\":2,\"cc\":3,\"dd\":4,\"ee\":5,\"ff\":6,\"gg\":7},\"s6\":\"İI ıi\",\"m7\":{\"k1\":[1,2],\"k2\":{\"n\":true},\"k3\":\"s\"},\"o8\":{\"a\":{\"b\":{\"flag\":true,\"c\":\"<x>\"}}},\"o9\":true}"
+  },
+  "out": "",
+  "err": "",
+  "code": 0
+ },
+ {
+  "id": "output_and_escaping/0001",
+  "argv": [
+   "--escaping-strategy=url_param",
+   "--locale=de-DE",
+   "--hash-maps",
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% if not false %}{% if o5|length > 0 %}{{ undef.a|default(\"fallback<>\") }}\n{% for e3 in m2 %}{{ e3.key }}={{ e3.value }};{% endfor %}\n{{ \"<#{m4|length}>\" }}\n{{ o1 }}|{{ o1|raw }}|{{ o1|escape }}{% endif %}{% endif %}",
+   "ctx.json": "{\"o1\":\"slash/dash-\",\"m2\":{\"k1\":[1,2],\"k2\":{\"n\":true},\"k3\":\"s\"},\"m4\":{\"x\":1.0e7,\"y\":\"<b>\",\"z\":null},\"o5\":7}"
+  },
+  "out": "",
+  "err": "",
+  "code": 0
+ },
+ {
+  "id": "tests/0002",
+  "argv": [
+   "--hash-maps",
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% if o7 is not empty %}{% if o6 is not empty %}{{ dt4|date }} {{ o1 is frob }} {{ l2|join(\"😀\") }} {{ dt3|date(\"MMMMM\") }} {{ bi5 }}|{{ bi5|abs }}{% else %}else-branch{% endif %}{% else %}else-branch{% endif %}",
+   "ctx.json": "{\"o1\":2147483647,\"l2\":[\"Alex\",\"Joe\",\"Bob\"],\"dt3\":\"1970-01-01T00:00:00+0000\",\"dt4\":\"2038-01-19T03:14:07+0000\",\"bi5\":123456789012345678901234567890,\"o6\":\"x\",\"o7\":\"yes\"}"
+  },
+  "out": "2038-01-19T03:14:07+0000 ",
+  "err": "PebbleException: Test [frob] does not exist. (main.peb:1)\n",
+  "code": 4
+ },
+ {
+  "id": "variables_and_attributes/0003",
+  "argv": [
+   "templates",
+   "main.peb"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% parallel %}{{ s1.length }}|{{ s1.isEmpty }}|{{ s1.blank }} | {{ l2[3] }} | {{ dt4|date(\"yyyy-MM-dd HH:mm:ss\") }} | {{ m5|length }} | {{ h3|raw }}|{{ h3|upper|raw }}|{{ h3|raw|upper }}{% endparallel %}"
+  },
+  "out": "|| |  |  | 0 | ||",
+  "err": "",
+  "code": 0
+ },
+ {
+  "id": "whitespace_control/0001",
+  "argv": [
+   "--escaping-strategy=url_param",
+   "--literal-decimals-as-integers",
+   "templates",
+   "main.peb",
+   "ctx.json"
+  ],
+  "files": {
+   "templates/base.peb": "[base {% block title %}T{% endblock %}]\n{% block content %}default-content{% endblock %}\n[{% block footer %}F{% endblock %}]",
+   "templates/base2.peb": "{% extends \"base.peb\" %}{% block footer %}F2{% block extra %}X{% endblock %}{% endblock %}",
+   "templates/card.peb": "<card>{% block cardContent %}empty{% endblock %}{% block cardFoot %}cf{% endblock %}</card>",
+   "templates/panel.peb": "<panel>{% block body %}body{% endblock %}{{ foo|default(\"-\") }}</panel>",
+   "templates/partial.peb": "(partial foo={{ foo|default(\"nofoo\") }} bar={{ bar|default(\"nobar\") }})",
+   "templates/partial2.peb": "[p2 {% for k in [1,2] %}{{ k }}{% endfor %} {{ foo|default(\"-\") }}]",
+   "templates/macros.peb": "{% macro input(name, value=\"\", type=\"text\") %}<input name=\"{{ name }}\" value=\"{{ value }}\" type=\"{{ type }}\">{% endmacro %}\n{% macro wrap(x) %}[{{ x }}]{% endmacro %}\n{% macro money(n) %}{{ n|numberformat(\"#,##0.00\") }}{% endmacro %}",
+   "templates/macros2.peb": "{% macro row(a, b) %}<tr><td>{{ a }}</td><td>{{ b }}</td></tr>{% endmacro %}\n{% macro esc(s) %}{{ s|escape(\"js\") }}{% endmacro %}",
+   "templates/main.peb": "{% if not false %}{% for i4 in n5 %}{{ i6 }}{% endfor %}\nx {{- s2|upper -}} y\n{{ h3|escape(\"css\") }}|{{ h3 }}{% else %}else-branch{% endif %}",
+   "ctx.json": "{\"s1\":\"x1y22z\",\"s2\":\"ﬄuffy\",\"h3\":\"</script>\",\"n5\":true}"
+  },
+  "out": "",
+  "err": "PebbleException: Not an iterable object. Value = [true] (main.peb:1)\n",
+  "code": 4
+ }
+]

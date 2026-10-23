@@ -1,4 +1,0 @@
-{# used by CoreTagsTest.testIncludeOverridesBlocks #}
-{% block content %}
-TWO
-{% endblock %}

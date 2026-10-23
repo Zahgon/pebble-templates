@@ -1,4 +1,0 @@
-Hello
-
-{% from "templates/macros/macro.peb" import iDontExist as macro_test %}
-Call 1: {{ macro_test() }}

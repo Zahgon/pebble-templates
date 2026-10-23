@@ -1,5 +1,0 @@
-{# 
-	used by:
-		EscaperExtensionTest.testAutoEscapingInclude
-#}
-{% include './template.autoescapeInclude2.peb' %}

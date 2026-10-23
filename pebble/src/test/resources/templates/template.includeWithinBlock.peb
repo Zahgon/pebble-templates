@@ -1,5 +1,0 @@
-{# used by CoreTagsTest.testIncludeWithinBlock #}
-{% block content %}
-{% include "templates/template.include2.peb" %}
-TEMPLATE1
-{% endblock %}

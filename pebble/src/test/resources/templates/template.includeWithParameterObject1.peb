@@ -1,2 +1,0 @@
-{# used by IncludeWithParameterTest.testIncludeWithParameterObject #}
-{% include './template.includeWithParameterObject2.peb' with { 'sub' : object } %}

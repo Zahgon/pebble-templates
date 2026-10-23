@@ -1,3 +1,0 @@
-Include
-{% import "templates/macros/macro.peb" %}
-Call 2: {{ test() }}

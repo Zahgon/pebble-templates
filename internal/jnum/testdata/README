@@ -1,0 +1,19 @@
+cases.txt holds one case per line; expected.txt is the same file with the answer the JDK of
+~/Final/authoring/pebl/bin/ref gave for each case appended in a last tab separated column. It was
+produced by handing cases.txt to a java.text / java.math driver through
+~/Final/authoring/pebl/bin/jrun, so every expectation in it is the real JDK's output rather than
+one someone wrote down. golden_test.go replays it.
+
+The first column is the kind of case:
+  D       Double.toString of the double with those bits
+  F       Float.toString of the float with those bits
+  FMT     new DecimalFormat(pattern, new DecimalFormatSymbols(locale)).format(value)
+  DEF     NumberFormat.getInstance(locale).format(value)
+  BD      a two operand BigDecimal operation
+  BD1     a one operand BigDecimal operation
+  P       Double.parseDouble, Long.parseLong, Integer.parseInt, new BigInteger, new BigDecimal
+  H       the boxed hashCode
+  BADPAT  a DecimalFormat pattern that the JDK rejects
+A value is typed by its prefix: L a Long, D a Double by its bits, F a Float by its bits, BD a
+BigDecimal, BI a BigInteger, B a Boolean, S a Short, Y a Byte. An answer starting with "!" is the
+message of the exception the JDK threw.

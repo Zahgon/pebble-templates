@@ -1,5 +1,0 @@
-{# 
-	used by:
-		EscaperExtensionTest.testAutoEscapingInclude
-#}
-<{{ text }}>

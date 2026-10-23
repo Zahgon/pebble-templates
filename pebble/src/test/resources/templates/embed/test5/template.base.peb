@@ -1,8 +1,0 @@
-BEFORE BASE [{{ foo }}]
-{% block embedBlock1 %}
-EMBED BASE [{{ foo }}]
-{% endblock %}
-{% block embedBlock2 %}
-EMBED BASE [{{ foo }}]
-{% endblock %}
-AFTER BASE [{{ foo }}]

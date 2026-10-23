@@ -1,3 +1,0 @@
-{# used by CoreTagsTest.testMacroFromAnotherFile #}
-{% import "templates/template.macro1.peb" %}
-{{ input("company", "forcorp", "text") }}

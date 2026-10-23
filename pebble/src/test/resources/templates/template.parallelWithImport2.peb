@@ -1,2 +1,0 @@
-{# used by CoreTagsTest.testParallelWithImport #}
-{% macro test() %}success{% endmacro %}

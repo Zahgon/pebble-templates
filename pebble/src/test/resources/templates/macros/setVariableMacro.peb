@@ -1,4 +1,0 @@
-{% macro infantry() %}
-{% set unit = 'infantry' %}
-{{ unit }}
-{% endmacro %}

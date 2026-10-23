@@ -1,5 +1,0 @@
-{# used by CoreFunctionsTest.testParentFunction #}
-parent text
-{% block head %}
-	parent head
-{% endblock head %}

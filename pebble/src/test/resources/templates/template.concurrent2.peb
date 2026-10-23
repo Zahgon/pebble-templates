@@ -1,4 +1,0 @@
-{# 
-	used by ConcurrentTest.testThreadSafeCompilationOfMultipleTemplates 
-#}
-{{ test.a }}:{{ test.b }}:{{ test.c }}

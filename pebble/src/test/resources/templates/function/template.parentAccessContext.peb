@@ -1,2 +1,0 @@
-{# used by CoreFunctionsTest.testParentBlockHasAccessToContext #}
-{% block head %}{{ foo }}{% endblock head %}

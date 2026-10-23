@@ -1,74 +1,60 @@
-# Pebble [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/erbussierel) [![Build](https://github.com/PebbleTemplates/pebble/actions/workflows/maven.yml/badge.svg)](https://github.com/PebbleTemplates/pebble/actions/workflows/maven.yml)
+# Pebble
 
-Pebble is a java templating engine inspired by [Twig](https://twig.symfony.com/). It separates itself from the crowd
-with its inheritance feature and its easy-to-read syntax. It ships with built-in autoescaping for security, and it
-includes integrated support for internationalization.
+Pebble is a templating engine inspired by [Twig](https://twig.symfony.com/). It separates itself from the crowd with
+its inheritance feature and its easy-to-read syntax. It ships with built-in autoescaping for security.
 
-For more information please visit the [website](https://pebbletemplates.io).
+This repository holds the Go port of the Pebble core: the lexer, the parser and the evaluation of the whole template
+language, with the tags, filters, functions, tests and operators of the core extension, the escaper extension with
+its `html`, `js`, `css` and `url_param` strategies, template inheritance, `include`, `embed`, macros and imports, the
+file loader and the `strictVariables` and `newLineTrimming` options. The port reproduces the behaviour of the Java
+release 4.1.2 byte for byte, down to the way the Java runtime formats numbers, maps case, formats dates, orders hash
+maps and words its exceptions.
 
-# Breaking changes in version 4.1.x
+For documentation of the template language please visit the [website](https://pebbletemplates.io), or read `docs/`
+in this repository.
 
-- If you do not provide a custom Loader, Pebble will now use only a `ClasspathLoader` by default, same as the spring autoconfiguration.
-  Before that, it would have used an instance of the `DelegatingLoader` which consists of a `ClasspathLoader` and a `FileLoader` behind the scenes to find your templates.
-- Modify the `FileLoader` to use a mandatory base directory parameter.
+## Building
 
-# Breaking changes in version 4.0.x
+Go 1.23 or newer, standard library only:
 
-- Use one of the following artifactId according to the spring boot version that you are using
+    CGO_ENABLED=0 go build -o pebble ./cmd/pebble
 
-| ArtifactId                        | spring-boot version |
-|-----------------------------------|---------------------|
-| pebble-legacy-spring-boot-starter | 3.x.x               |
-| pebble-spring-boot-starter        | 4.x.x               |
+## The pebble command
 
-- The following spring boot properties has been moved to `.servlet` or `.reactive`
+    pebble [options] TEMPLATE_DIR TEMPLATE_NAME [CONTEXT_FILE]
 
-| Old property                    | New Property                            |
-|---------------------------------|-----------------------------------------|
-| pebble.allowRequestOverride     | pebble.servlet.allowRequestOverride     |
-| pebble.allowSessionOverride     | pebble.servlet.allowSessionOverride     |
-| pebble.cache                    | pebble.servlet.cache                    |
-| pebble.contentType              | pebble.servlet.contentType              |
-| pebble.exposeRequestAttributes  | pebble.servlet.exposeRequestAttributes  |
-| pebble.exposeSessionAttributes  | pebble.servlet.exposeSessionAttributes  |
-| pebble.exposeSpringMacroHelpers | pebble.servlet.exposeSpringMacroHelpers |
-|                                 | pebble.reactive.mediaTypes              |
+It renders `TEMPLATE_NAME`, loaded from `TEMPLATE_DIR`, with the JSON object of `CONTEXT_FILE` as its context, and
+writes the result to standard output. A failure prints the exception class, its message with the template name and
+line, and each cause, on standard error, and exits 2 for a parser error, 3 for a loader error, 4 for any other
+Pebble error, 64 for a usage error, 65 for a bad context, 66 for an unreadable context file, 70 for any other
+failure and 74 for an output failure.
 
-For more information, please consult the spring-boot integration documentation in
-the [Boot externalized configuration section](https://pebbletemplates.io/wiki/guide/spring-boot-integration/)
+| option | meaning |
+| :-- | :-- |
+| `--strict-variables` | missing variables and attributes raise an error instead of rendering nothing |
+| `--no-newline-trimming` | keep the newline that follows a tag |
+| `--no-autoescaping` | render expressions unescaped |
+| `--escaping-strategy=NAME` | the default escaping strategy: `html` (the default), `js`, `css` or `url_param` |
+| `--locale=TAG` | the locale of the evaluation, as a language tag; `en-US` by default |
+| `--timezone=ZONE` | the default time zone; `UTC` by default |
+| `--literal-decimals-as-integers` | number literals with a fraction become integers |
+| `--literal-numbers-as-bigdecimals` | number literals become big decimals |
+| `--max-rendered-size=N` | fail once the output passes N characters (`-1`, the default, is unlimited) |
+| `--big-decimals` | context numbers with a fraction or an exponent become big decimals |
+| `--hash-maps` | context objects become hash maps, so their iteration order is the hash order |
+| `--var=NAME=JSON` | add one context entry, repeatable |
 
-# Breaking changes in version 3.2.x
+## Using the library
 
-- Rename package from `com.mitchellbosecke` to `io.pebbletemplates`
-- Change default suffix to `.peb` instead of `.pebble` in spring boot autoconfiguration
-- Rename method `getInstance` to `createInstance` in `BinaryOperator` interface (#521)
+    engine := pebble.NewEngine(&pebble.Options{Prefix: "/srv/templates", NewLineTrimming: true,
+        AutoEscaping: true, DefaultEscapingStrategy: "html", MaxRenderedSize: -1,
+        Locale: "en-US", LocaleDisplay: "en_US", TimeZone: "UTC"})
+    context := &pebble.Map{Vals: map[any]any{}}
+    err := engine.Render(os.Stdout, "index.peb", context)
 
-## License
+## Tests
 
-    Copyright (c) 2013, Mitchell Bösecke
-    All rights reserved.
-    
-    Redistribution and use in source and binary forms, with or without modification,
-    are permitted provided that the following conditions are met:
-    
-    * Redistributions of source code must retain the above copyright notice, this
-      list of conditions and the following disclaimer.
-    
-    * Redistributions in binary form must reproduce the above copyright notice, this
-      list of conditions and the following disclaimer in the documentation and/or
-      other materials provided with the distribution.
-    
-    * Neither the name of the {organization} nor the names of its
-      contributors may be used to endorse or promote products derived from
-      this software without specific prior written permission.
-    
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-    DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-    ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-    ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    go test ./...
+
+The tests cover the lexer and the parser, the Java number, string and date semantics the output depends on, the
+filters, functions, tests and operators, and the command, replaying recorded command lines of the Java release.

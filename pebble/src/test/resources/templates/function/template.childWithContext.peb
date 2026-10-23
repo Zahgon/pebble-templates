@@ -1,3 +1,0 @@
-{# used by CoreFunctionsTest.testParentBlockHasAccessToContext #}
-{% extends "templates/function/template.parentAccessContext.peb" %}
-{% block head %}{% set foo = 'bar' %}{{ parent() }}{% endblock head %}

@@ -1,3 +1,0 @@
-{# line 1 #}
-{{ macroWhichDoesNotExists() }}
-{# line 3 #}

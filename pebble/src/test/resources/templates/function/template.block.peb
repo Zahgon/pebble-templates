@@ -1,4 +1,0 @@
-{# used by CoreFunctionsTest.testBlockFunction #}
-{% block title %}Default Title{% endblock title %}
-
-{{ block("title") }}

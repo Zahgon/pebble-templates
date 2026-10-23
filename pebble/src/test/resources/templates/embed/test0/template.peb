@@ -1,4 +1,0 @@
-BEFORE ALL
-{% embed './template.base.peb' %}{% endembed %}
-
-AFTER ALL

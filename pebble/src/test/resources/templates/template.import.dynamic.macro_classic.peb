@@ -1,4 +1,0 @@
-{# used by CoreTagsTest.testDynamicImport #}
-{% macro render_form() %}
-classic macro
-{% endmacro %}

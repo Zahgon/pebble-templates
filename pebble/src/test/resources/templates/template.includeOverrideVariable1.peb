@@ -1,4 +1,0 @@
-{# used by CoreTagsTest.testIncludeOverridesVariable #}
-{% set one = 'one (base)' %}
-{% set two = 'two (base)' %}
-{% include "templates/template.includeOverrideVariable2.peb" with {"one": "one (overridden)", "two": null} %}

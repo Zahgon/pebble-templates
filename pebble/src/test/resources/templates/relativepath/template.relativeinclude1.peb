@@ -1,5 +1,0 @@
-{#
-	used by:
-		TestRelativePath.testRelativeInclude
-#}
-{% include './template.relativeinclude2.peb' %}
